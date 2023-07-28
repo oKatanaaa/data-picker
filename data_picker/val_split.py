@@ -20,7 +20,7 @@ def main(
     
     val_name = os.path.join(dataset_folder, 'val_accepted.csv')
     pd.DataFrame(val_df).to_csv(val_name, index=False)
-    
+    print('Done!')
 
 if __name__ == "__main__":
     typer.run(main)
