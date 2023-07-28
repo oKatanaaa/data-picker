@@ -73,15 +73,21 @@ def main(
         save_folder_path = save_folder
     os.makedirs(save_folder_path, exist_ok=True)
     
-    accepted_name = f'train_accepted.csv'
-    accepted_name = os.path.join(save_folder_path, accepted_name)
-    pd.DataFrame(keep).to_csv(accepted_name, index=False)
+    smart_save(save_folder_path, 'train_accepted.csv', pd.DataFrame(keep))
 
     if save_rejected:
-        rejected_name = f'test_rejected.csv'
-        rejected_name = os.path.join(save_folder_path, rejected_name)
-        pd.DataFrame(rejected).to_csv(rejected_name, index=False)
-    
+        smart_save(save_folder_path, 'train_rejected.csv', pd.DataFrame(rejected))
 
+
+def smart_save(save_folder: str, basefilename: str, df: pd.DataFrame):
+    filename = os.path.join(save_folder, basefilename)
+    if os.path.exists(filename):
+        print(f'{bcolors.WARNING}File {filename} already exists. Adding new content at the end.{bcolors.ENDC}')
+        old_df = pd.read_csv(filename)
+        df = pd.concat([old_df, df])
+    
+    df.to_csv(filename, index=False)
+    
+    
 if __name__ == "__main__":
     typer.run(main)

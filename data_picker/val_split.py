@@ -10,7 +10,7 @@ def main(
     dataset_folder: Annotated[str, typer.Argument(help="Name of the huggingface dataset.")],
     val_split: Annotated[float, typer.Option(help="Percentage of the dataset to use for validation.")] = 0.25
 ):  
-    accepted_name = os.path.join(dataset_folder, accepted_name)
+    accepted_name = os.path.join(dataset_folder, 'train_accepted.csv')
     df = pd.read_csv(accepted_name)
     train_split_ind = len(df) - int(len(df) * val_split)
     train_df = df[:train_split_ind]
